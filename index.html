@@ -4,61 +4,640 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Vibuu ♡</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{min-height:100vh;overflow:hidden;font-family:Georgia,serif;background:linear-gradient(135deg,#241635,#4b3150,#201c34);color:#fff}
-.screen{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:25px;opacity:0}
-.screen.active{display:flex;animation:in .8s ease forwards}
-.title{font-size:28px;margin-bottom:28px;line-height:1.35}
-.sub{font-size:17px;opacity:.85;margin-top:12px}
-button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;padding:13px 25px;border-radius:30px;font-size:16px;cursor:pointer;backdrop-filter:blur(10px)}
-button:active{transform:scale(.9)}
-.tap{animation:pulse 1.5s infinite}
-.star{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;animation:twinkle 2s infinite alternate}
-.gift,.env,.cake,.box{font-size:105px;cursor:pointer;animation:bounce 1.5s infinite}
-.balloon{position:absolute;font-size:65px;cursor:pointer;animation:float 3s infinite ease-in-out}
-.b1{left:15%;top:25%}.b2{right:15%;top:32%}.b3{left:42%;top:18%}
-.popped{animation:pop .35s forwards!important}
-.heart{position:absolute;font-size:38px;cursor:pointer;animation:float 2s infinite alternate}
-.h1{left:18%;top:30%}.h2{right:20%;top:25%}.h3{left:45%;bottom:25%}.h4{right:35%;bottom:35%}
-.hug{font-size:110px;animation:heartbeat 1.5s infinite}
-.kiss{font-size:105px;animation:kiss 1.7s infinite}
-.final{font-size:70px;animation:heartbeat 1.5s infinite}
-.confetti,.fh{position:fixed;pointer-events:none;z-index:100}
-.confetti{top:-20px;font-size:22px;animation:fall 3s linear forwards}
-.fh{bottom:-30px;font-size:25px;animation:rise 4s linear forwards}
-@keyframes in{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
-@keyframes twinkle{from{opacity:.2;transform:scale(.7)}to{opacity:1;transform:scale(1.5)}}
-@keyframes pop{to{transform:scale(2);opacity:0}}
-@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
-@keyframes rise{to{transform:translateY(-110vh) rotate(20deg);opacity:0}}
-@keyframes kiss{0%,100%{transform:scale(1)}50%{transform:scale(1.2) rotate(-5deg)}}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  min-height:100vh;
+  overflow:hidden;
+  font-family:Georgia,serif;
+  background:linear-gradient(135deg,#241635,#4b3150,#201c34);
+  color:white;
+}
+
+.screen{
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  text-align:center;
+  padding:25px;
+  opacity:0;
+}
+
+.screen.active{
+  display:flex;
+  animation:screenIn .7s ease forwards;
+}
+
+.title{
+  font-size:28px;
+  line-height:1.4;
+  margin-bottom:18px;
+}
+
+.sub{
+  font-size:17px;
+  line-height:1.6;
+  opacity:.88;
+}
+
+button{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.12);
+  color:white;
+  padding:13px 25px;
+  border-radius:30px;
+  font-size:16px;
+  cursor:pointer;
+  backdrop-filter:blur(8px);
+}
+
+button:active{
+  transform:scale(.9);
+}
+
+.tap{
+  animation:pulse 1.5s infinite;
+}
+
+.star{
+  position:absolute;
+  width:3px;
+  height:3px;
+  border-radius:50%;
+  background:white;
+  animation:twinkle 2s infinite alternate;
+}
+
+.gift,
+.envelope,
+.cake,
+.box{
+  font-size:105px;
+  cursor:pointer;
+  animation:bounce 1.5s infinite;
+}
+
+/* BALLOONS */
+.balloon{
+  position:absolute;
+  font-size:65px;
+  cursor:pointer;
+  animation:float 3s infinite ease-in-out;
+}
+
+.b1{left:15%;top:25%}
+.b2{right:15%;top:32%}
+.b3{left:42%;top:18%}
+
+.popped{
+  animation:pop .35s forwards!important;
+}
+
+/* HEART GAME */
+.heartGrid{
+  display:grid;
+  grid-template-columns:repeat(2,90px);
+  gap:22px;
+  margin:30px 0;
+}
+
+.choiceHeart{
+  width:90px;
+  height:90px;
+  padding:0;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:24px;
+  background:rgba(255,255,255,.08);
+  color:white;
+  font-size:50px;
+  animation:heartFloat 2s infinite ease-in-out;
+}
+
+.choiceHeart:nth-child(2){
+  animation-delay:.2s;
+}
+
+.choiceHeart:nth-child(3){
+  animation-delay:.4s;
+}
+
+.choiceHeart:nth-child(4){
+  animation-delay:.6s;
+}
+
+.wrong{
+  animation:shake .4s!important;
+}
+
+.correct{
+  animation:correctHeart .8s forwards!important;
+}
+
+/* HUG + KISS */
+.hug{
+  font-size:110px;
+  animation:heartbeat 1.5s infinite;
+}
+
+.kiss{
+  font-size:105px;
+  animation:kiss 1.5s infinite;
+}
+
+.final{
+  font-size:70px;
+  animation:heartbeat 1.5s infinite;
+}
+
+/* EFFECTS */
+.confetti,
+.floatHeart{
+  position:fixed;
+  pointer-events:none;
+  z-index:100;
+}
+
+.confetti{
+  top:-20px;
+  font-size:22px;
+  animation:fall 3s linear forwards;
+}
+
+.floatHeart{
+  bottom:-30px;
+  font-size:25px;
+  animation:rise 4s linear forwards;
+}
+
+/* ANIMATIONS */
+@keyframes screenIn{
+  from{
+    opacity:0;
+    transform:scale(.94);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-18px)}
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-15px)}
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+}
+
+@keyframes heartbeat{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.18)}
+}
+
+@keyframes twinkle{
+  from{opacity:.2;transform:scale(.7)}
+  to{opacity:1;transform:scale(1.5)}
+}
+
+@keyframes pop{
+  to{
+    transform:scale(2);
+    opacity:0;
+  }
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh) rotate(720deg);
+    opacity:0;
+  }
+}
+
+@keyframes rise{
+  to{
+    transform:translateY(-110vh) rotate(20deg);
+    opacity:0;
+  }
+}
+
+@keyframes kiss{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.2) rotate(-5deg)}
+}
+
+@keyframes heartFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-9px)}
+  75%{transform:translateX(9px)}
+}
+
+@keyframes correctHeart{
+  50%{transform:scale(1.35)}
+  100%{
+    transform:scale(1.1);
+    background:rgba(255,100,150,.2);
+  }
+}
 </style>
 </head>
+
 <body>
-<div class="screen active" id="s1"><div class="title">Vibuu… 🤫</div><div class="sub">I made something for you.</div><br><button class="tap" onclick="go(2)">TAP TO ENTER ✨</button></div>
-<div class="screen" id="s2"><div class="title">For my Vibuu ♡</div><div class="gift" onclick="burst();go(3)">🎁</div><div class="sub">Tap the gift 🎀</div></div>
-<div class="screen" id="s3"><div class="env">💌</div><div class="title">Oh… one more thing 👀</div><button onclick="burst();go(4)">TAP TAP 💌</button></div>
-<div class="screen" id="s4"><div class="cake">🎂</div><div class="title">Happy Birthday, Vibuu! ❤️</div><div class="sub">Make a wish… ✨</div><br><button onclick="burst();setTimeout(()=>go(5),700)">BLOW THE CANDLES 🕯️</button></div>
-<div class="screen" id="s5"><div class="title">Catch them! 👀</div><div class="balloon b1" onclick="pop(this)">🎈</div><div class="balloon b2" onclick="pop(this)">🎈</div><div class="balloon b3" onclick="pop(this)">🎈</div><div class="sub">Pop all 3 balloons 🎈</div></div>
-<div class="screen" id="s6"><div class="title">Hmm… something is hiding here 👀</div><div class="box" onclick="burst();hearts();go(7)">🎁</div><div class="sub">TAP TAP 🎀</div></div>
-<div class="screen" id="s7"><div class="title">Find the special one… ❤️</div><div class="heart h1">♡</div><div class="heart h2">♡</div><div class="heart h3" onclick="hearts();go(8)">❤️</div><div class="heart h4">♡</div><div class="sub">One of these is different 👀</div></div>
-<div class="screen" id="s8"><div class="hug">🫂</div><div class="title">A little something for you…</div><button onclick="hearts();go(9)">TAP 🤍</button></div>
-<div class="screen" id="s9"><div class="kiss">😘</div><div class="title">Mwah ♡</div><div class="sub">Just for you 😌</div><br><button onclick="hearts();go(10)">✨</button></div>
-<div class="screen" id="s10"><div class="title">Okay… last little surprise 👀</div><div class="final" onclick="heartTap()">❤️</div><div class="sub" id="ht">Tap the heart…</div></div>
-<div class="screen" id="s11"><div class="final">🎀</div><div class="title">HAPPY BIRTHDAY<br>VIBUU! 🎂❤️</div><button onclick="burst();hearts();go(12)">ONE LAST TAP ✨</button></div>
-<div class="screen" id="s12"><div class="title">13 • 09 • 2026</div><div class="final">❤️</div><div class="sub">Now smile. 😌❤️</div></div>
+
+<!-- 1 -->
+<div class="screen active" id="s1">
+  <div class="title">Vibuu… 🤫</div>
+  <div class="sub">I made something for you. ❤️</div>
+  <br>
+  <button class="tap" onclick="go(2)">
+    TAP TO ENTER ✨
+  </button>
+</div>
+
+<!-- 2 -->
+<div class="screen" id="s2">
+  <div class="title">For my Vibuu ♡</div>
+  <div class="gift" onclick="burst();go(3)">
+    🎁
+  </div>
+  <div class="sub">Tap the gift 🎀</div>
+</div>
+
+<!-- 3 -->
+<div class="screen" id="s3">
+  <div class="envelope">💌</div>
+  <div class="title">Oh… one more thing 👀</div>
+  <button onclick="burst();go(4)">
+    TAP TAP 💌
+  </button>
+</div>
+
+<!-- 4 -->
+<div class="screen" id="s4">
+  <div class="cake">🎂</div>
+  <div class="title">Happy Birthday, Vibuu! ❤️</div>
+  <div class="sub">Okay Birthday Boy… make a wish ✨</div>
+  <br>
+  <button onclick="burst();setTimeout(function(){go(5)},700)">
+    BLOW THE CANDLES 🕯️
+  </button>
+</div>
+
+<!-- 5 -->
+<div class="screen" id="s5">
+  <div class="title">Catch them! 👀</div>
+
+  <div class="balloon b1" onclick="pop(this)">🎈</div>
+  <div class="balloon b2" onclick="pop(this)">🎈</div>
+  <div class="balloon b3" onclick="pop(this)">🎈</div>
+
+  <div class="sub">
+    Pop all 3 balloons 🎈
+  </div>
+</div>
+
+<!-- 6 -->
+<div class="screen" id="s6">
+  <div class="title">
+    Hmm… something is hiding here 👀
+  </div>
+
+  <div class="box" onclick="burst();hearts();go(7)">
+    🎁
+  </div>
+
+  <div class="sub">
+    TAP TAP 🎀
+  </div>
+</div>
+
+<!-- 7 HEART GAME -->
+<div class="screen" id="s7">
+
+  <div class="title">
+    Find my heart ❤️
+  </div>
+
+  <div class="sub">
+    Ek heart thoda special hai… 👀<br>
+    Tap karke find karo!
+  </div>
+
+  <div class="heartGrid">
+
+    <button class="choiceHeart" onclick="wrongHeart(this)">
+      ♡
+    </button>
+
+    <button class="choiceHeart" onclick="wrongHeart(this)">
+      ♡
+    </button>
+
+    <button class="choiceHeart" onclick="rightHeart(this)">
+      ♡
+    </button>
+
+    <button class="choiceHeart" onclick="wrongHeart(this)">
+      ♡
+    </button>
+
+  </div>
+
+</div>
+
+<!-- 8 -->
+<div class="screen" id="s8">
+
+  <div class="hug">🫂</div>
+
+  <div class="title">
+    A little something for you… 🥹
+  </div>
+
+  <button onclick="hearts();go(9)">
+    TAP 🤍
+  </button>
+
+</div>
+
+<!-- 9 -->
+<div class="screen" id="s9">
+
+  <div class="kiss">😘</div>
+
+  <div class="title">
+    Mwah ♡
+  </div>
+
+  <div class="sub">
+    Just for you 😌❤️
+  </div>
+
+  <br>
+
+  <button onclick="hearts();go(10)">
+    ✨
+  </button>
+
+</div>
+
+<!-- 10 -->
+<div class="screen" id="s10">
+
+  <div class="title">
+    Okay… last little surprise 👀
+  </div>
+
+  <div class="final" onclick="heartTap()">
+    ❤️
+  </div>
+
+  <div class="sub" id="ht">
+    Tap the heart…
+  </div>
+
+</div>
+
+<!-- 11 -->
+<div class="screen" id="s11">
+
+  <div class="final">
+    🎀
+  </div>
+
+  <div class="title">
+    HAPPY BIRTHDAY<br>
+    VIBUU! 🎂❤️
+  </div>
+
+  <button onclick="burst();hearts();go(12)">
+    ONE LAST TAP ✨
+  </button>
+
+</div>
+
+<!-- 12 -->
+<div class="screen" id="s12">
+
+  <div class="title">
+    13 • 09 • 2026
+  </div>
+
+  <div class="final">
+    ❤️
+  </div>
+
+  <div class="sub">
+    Now smile. 😌❤️
+  </div>
+
+</div>
+
 <script>
-for(let i=0;i<80;i++){let s=document.createElement("div");s.className="star";s.style.left=Math.random()*100+"%";s.style.top=Math.random()*100+"%";s.style.animationDelay=Math.random()*3+"s";document.body.appendChild(s)}
-function go(n){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById("s"+n).classList.add("active")}
-function burst(){for(let i=0;i<60;i++){let c=document.createElement("div");c.className="confetti";c.innerHTML=["✨","💕","💗","🎉","♡"][Math.floor(Math.random()*5)];c.style.left=Math.random()*100+"%";c.style.animationDelay=Math.random()*.7+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),3500)}}
-function hearts(){for(let i=0;i<30;i++){let h=document.createElement("div");h.className="fh";h.innerHTML=["❤️","💕","💗","💖","✨"][Math.floor(Math.random()*5)];h.style.left=Math.random()*100+"%";h.style.animationDelay=Math.random()*1.2+"s";document.body.appendChild(h);setTimeout(()=>h.remove(),4500)}}
-let bp=0;function pop(el){if(el.classList.contains("popped"))return;el.classList.add("popped");bp++;burst();if(bp===3){setTimeout(()=>{bp=0;go(6)},700)}}
-let ht=0;function heartTap(){ht++;hearts();let t=document.getElementById("ht");if(ht===1)t.innerHTML="Again… ❤️";else if(ht===2)t.innerHTML="One more… 🥹";else{t.innerHTML="♡";burst();setTimeout(()=>go(11),900)}}
+
+/* STARS */
+for(let i=0;i<80;i++){
+
+  let s=document.createElement("div");
+
+  s.className="star";
+
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+
+  s.style.animationDelay=Math.random()*3+"s";
+
+  document.body.appendChild(s);
+}
+
+
+/* SCREEN CHANGE */
+function go(n){
+
+  document.querySelectorAll(".screen")
+  .forEach(function(screen){
+    screen.classList.remove("active");
+  });
+
+  document.getElementById("s"+n)
+  .classList.add("active");
+}
+
+
+/* CONFETTI */
+function burst(){
+
+  for(let i=0;i<60;i++){
+
+    let c=document.createElement("div");
+
+    c.className="confetti";
+
+    c.innerHTML=[
+      "✨",
+      "💕",
+      "💗",
+      "🎉",
+      "♡"
+    ][Math.floor(Math.random()*5)];
+
+    c.style.left=Math.random()*100+"%";
+
+    c.style.animationDelay=
+      Math.random()*.7+"s";
+
+    document.body.appendChild(c);
+
+    setTimeout(function(){
+      c.remove();
+    },3500);
+  }
+}
+
+
+/* FLOATING HEARTS */
+function hearts(){
+
+  for(let i=0;i<30;i++){
+
+    let h=document.createElement("div");
+
+    h.className="floatHeart";
+
+    h.innerHTML=[
+      "❤️",
+      "💕",
+      "💗",
+      "💖",
+      "✨"
+    ][Math.floor(Math.random()*5)];
+
+    h.style.left=Math.random()*100+"%";
+
+    h.style.animationDelay=
+      Math.random()*1.2+"s";
+
+    document.body.appendChild(h);
+
+    setTimeout(function(){
+      h.remove();
+    },4500);
+  }
+}
+
+
+/* BALLOON GAME */
+let balloonCount=0;
+
+function pop(el){
+
+  if(el.classList.contains("popped")){
+    return;
+  }
+
+  el.classList.add("popped");
+
+  balloonCount++;
+
+  burst();
+
+  if(balloonCount===3){
+
+    setTimeout(function(){
+
+      balloonCount=0;
+
+      go(6);
+
+    },700);
+  }
+}
+
+
+/* HEART GAME */
+function wrongHeart(el){
+
+  el.classList.remove("wrong");
+
+  void el.offsetWidth;
+
+  el.classList.add("wrong");
+}
+
+
+function rightHeart(el){
+
+  el.innerHTML="❤️";
+
+  el.classList.add("correct");
+
+  burst();
+
+  hearts();
+
+  setTimeout(function(){
+    go(8);
+  },900);
+}
+
+
+/* FINAL HEART */
+let heartCount=0;
+
+function heartTap(){
+
+  heartCount++;
+
+  hearts();
+
+  let text=document.getElementById("ht");
+
+  if(heartCount===1){
+
+    text.innerHTML="Again… ❤️";
+
+  }
+
+  else if(heartCount===2){
+
+    text.innerHTML="One more… 🥹";
+
+  }
+
+  else{
+
+    text.innerHTML="♡";
+
+    burst();
+
+    setTimeout(function(){
+      go(11);
+    },900);
+
+  }
+}
+
 </script>
+
 </body>
 </html>
